@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  StyleSheet
+} from "react-native";
 import { Card } from "react-native-material-ui";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
@@ -8,17 +15,22 @@ import UserManual from "components/UserManual";
 
 import PARSER from "libs/varCal/parser";
 import * as UTILS from "utils/index";
+import STYLES from "./styles";
 
 const FONT_SIZE = 15;
 
-const layer = ModalLayerFactory.create({
-  component: <UserManual />
-});
+let layer = null;
 
 const Calculator = () => {
   const [value, setText] = useState("");
   const [converted, setConverted] = useState({});
   const [parsed, setParsed] = useState([]);
+
+  useEffect(() => {
+    layer = ModalLayerFactory.create({
+      component: <UserManual />
+    });
+  });
 
   const handleChangeText = (text) => {
     setText(text);
@@ -93,95 +105,30 @@ const Calculator = () => {
   };
 
   return (
-    <View style={{ flex: 1, width: "100%" }}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <View
-          style={{
-            flex: 10,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingRight: 10
-          }}
-        >
+    <View style={STYLES.calculatorContainer}>
+      <View style={STYLES.buttonArea}>
+        <View style={STYLES.buttonArea1}>
           <TouchableOpacity
-            style={{
-              backgroundColor: "#A9DFBF",
-              width: 150,
-              height: 30,
-              borderColor: "#A9DFBF",
-              borderWidth: 2,
-              borderRadius: 15,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
+            style={STYLES.button.clear.touch}
             onPress={handleClear}
           >
-            <Text
-              style={{
-                color: "#F2F4F4",
-                fontSize: 20,
-                fontWeight: "bold"
-              }}
-            >
-              CLEAR
-            </Text>
+            <Text style={STYLES.button.clear.text}>CLEAR</Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingRight: 10
-          }}
-        >
+        <View style={STYLES.buttonArea2}>
           <TouchableOpacity
-            style={{
-              backgroundColor: "#fff",
-              width: 30,
-              height: 30,
-              borderColor: "#736E6D",
-              borderWidth: 2,
-              borderRadius: 15,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
+            style={STYLES.button.info.touch}
+            onPress={handleOpenInfo}
           >
-            <Text
-              style={{
-                color: "#736E6D",
-                fontSize: 20,
-                fontWeight: "bold"
-              }}
-              onPress={handleOpenInfo}
-            >
-              ?
-            </Text>
+            <Text style={STYLES.button.info.text}>?</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flex: 15, flexDirection: "row" }}>
-        <View
-          style={{
-            flex: 2,
-            paddingTop: 20,
-            paddingLeft: 20
-          }}
-        >
+
+      <View style={STYLES.contentArea}>
+        <View style={STYLES.textArea}>
           <UselessTextInput
-            style={{
-              width: "100%",
-              height: "100%",
-              fontSize: FONT_SIZE,
-              fontWeight: "bold"
-            }}
+            style={STYLES.textInput}
             multiline
             numberOfLines={20}
             onChangeText={handleChangeText}
@@ -190,19 +137,17 @@ const Calculator = () => {
           />
         </View>
 
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#f5f5f5",
-            paddingTop: 20,
-            paddingRight: 20
-          }}
-        >
-          {renderItems()}
-        </View>
+        <View style={STYLES.resultArea}>{renderItems()}</View>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  calculatorContainer: {
+    flex: 1,
+    width: "100%"
+  }
+});
 
 export default Calculator;

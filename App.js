@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet } from "react-native";
 import { ModalLayers } from "react-native-modal-layer";
 
 import CalculatorScreen from "pages/CalculatorScreen";
@@ -8,12 +8,19 @@ function App() {
   return (
     <>
       <ModalLayers>
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
           <CalculatorScreen />
-        </SafeAreaView>
+        </View>
       </ModalLayers>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? 40 : 40
+  }
+});
 
 export default App;

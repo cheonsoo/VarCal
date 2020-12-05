@@ -2,11 +2,11 @@
   "expo": {
     "name": "VarCal",
     "slug": "VarCal",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/VarCalAppIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/VarCalAppIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,16 +17,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "VarCal"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/VarCalAppIcon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.varcal"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Calculator with variables"
   }
 }
