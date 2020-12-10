@@ -6,7 +6,7 @@ const styles = {
     width: "100%"
   },
   buttonArea: {
-    flex: 1,
+    height: 50,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"

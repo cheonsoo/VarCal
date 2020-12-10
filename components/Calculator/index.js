@@ -34,6 +34,10 @@ const Calculator = ({ data, onChange }) => {
   });
 
   useEffect(() => {
+    handleParse();
+  }, [value]);
+
+  useEffect(() => {
     // console.log(data);
     setText(data);
   }, [data]);
@@ -44,12 +48,41 @@ const Calculator = ({ data, onChange }) => {
   };
 
   const handleKeyUp = (evt) => {
-    if (evt.nativeEvent.key === "Enter") {
-      const arr = value.split("\n");
+    // console.log("### keyUp");
+    // if (evt.nativeEvent.key === "Enter") {
+    const arr = value.split("\n");
 
+    const parsed = PARSER.parse(arr);
+    const variables = PARSER.getVariables(parsed);
+
+    try {
+      parsed
+        .filter((item) => item.type === "equation")
+        .forEach((item) => {
+          const converted = PARSER.getEquation(variables, item.name);
+
+          if (converted !== "") {
+            item.converted = converted;
+            item.value = eval(converted);
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log(parsed);
+
+    setParsed(parsed);
+    // }
+  };
+
+  const handleParse = () => {
+    if (!value) return;
+
+    try {
+      const arr = value.split("\n");
       const parsed = PARSER.parse(arr);
       const variables = PARSER.getVariables(parsed);
-
       try {
         parsed
           .filter((item) => item.type === "equation")
@@ -58,7 +91,11 @@ const Calculator = ({ data, onChange }) => {
 
             if (converted !== "") {
               item.converted = converted;
-              item.value = eval(converted);
+              try {
+                item.value = eval(converted);
+              } catch (e) {
+                item.value = "";
+              }
             }
           });
       } catch (e) {
@@ -66,6 +103,8 @@ const Calculator = ({ data, onChange }) => {
       }
 
       setParsed(parsed);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -174,7 +213,7 @@ const Calculator = ({ data, onChange }) => {
             multiline
             numberOfLines={20}
             onChangeText={handleChangeText}
-            onKeyPress={handleKeyUp}
+            // onKeyPress={handleKeyUp}
             onSelectionChange={handleSelection}
             value={value}
           />

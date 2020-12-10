@@ -29,7 +29,7 @@ const styles = {
     fontWeight: "bold"
   },
   tab: {
-    width: 50,
+    width: 60,
     height: 30,
     borderColor: "#575757",
     backgroundColor: "#FFF",
@@ -44,7 +44,7 @@ const styles = {
     marginRight: 5
   },
   tabActive: {
-    width: 50,
+    width: 60,
     height: 30,
     borderColor: "#575757",
     backgroundColor: "#575757",
@@ -68,14 +68,31 @@ const styles = {
   },
   showTab: {
     width: "100%",
-    height: "30%"
+    height: "100%",
+    position: "absolute",
+    top: 0
     // opacity: 1
   },
   hideTab: {
     width: 0,
-    height: 0
+    height: 0,
+    position: "absolute",
+    top: 1000
     // opacity: 0
   },
+  tabCloseIcon: {
+    width: 20,
+    borderWidth: 0,
+    borderColor: "red",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: -5,
+    right: -22
+  },
+  tabCloseText: { color: "#575757", fontWeight: "bold", fontSize: 10 },
+  tabCloseTextActive: { color: "#fff", fontWeight: "bold", fontSize: 10 },
   buttonInfo: {
     backgroundColor: "#fff",
     width: 26,

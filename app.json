@@ -2,7 +2,7 @@
   "expo": {
     "name": "VarCal",
     "slug": "VarCal",
-    "version": "0.1.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/VarCalAppIcon.png",
     "splash": {
@@ -26,7 +26,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.varcal",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"

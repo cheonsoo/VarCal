@@ -12,9 +12,9 @@ let layer = null;
 
 const CalculatorScreen = () => {
   const [text, setText] = useState("");
-  const [tabSize, setTabSize] = useState(["1"]);
-  const [selectedTab, setSelectedTab] = useState("1");
-  const [tabData, setTabData] = useState(["", "", "", ""]);
+  const [tabSize, setTabSize] = useState([1]);
+  const [selectedTab, setSelectedTab] = useState(1);
+  const [tabData, setTabData] = useState(["", "", "", "", ""]);
 
   useEffect(() => {
     layer = ModalLayerFactory.create({
@@ -22,20 +22,35 @@ const CalculatorScreen = () => {
     });
   });
 
-  // useEffect(() => {
-  //   console.log(`### selectedTab: ${selectedTab}`);
-  // }, [selectedTab]);
-
   const handleClickTab = (tabId) => {
     setSelectedTab(tabId);
   };
 
   const handleAddTab = () => {
-    if (tabSize.length >= 4) {
-      console.log("4 tabs are maximum");
+    if (tabSize.length >= 5) {
+      console.log("5 tabs are maximum");
       return;
     }
     setTabSize(tabSize.concat(tabSize.length + 1));
+  };
+
+  const handleRemoveTab = (tabId) => {
+    if (tabSize.length === 1) {
+      console.log("you have only one tab");
+      return;
+    }
+
+    const _tabSize = tabSize.slice();
+    const _tabData = tabData.slice();
+    const tabIdx = tabSize.findIndex((item) => item === tabId);
+
+    _tabData.splice(tabIdx, 1);
+    setTabData(_tabData);
+
+    _tabSize.splice(tabIdx, 1);
+    setTabSize(_tabSize.map((tabId, idx) => idx + 1));
+
+    setSelectedTab(1);
   };
 
   const handleChangeText = (text) => {
@@ -47,9 +62,6 @@ const CalculatorScreen = () => {
   };
 
   const handleData = (_tabId) => (data) => {
-    // console.log(`### tabId: ${_tabId}`);
-    // console.log(`### data: ${data}`);
-    console.log(tabData);
     const _tabData = tabData.map((item, idx) => {
       if (idx + 1 == _tabId) {
         return data;
@@ -73,13 +85,31 @@ const CalculatorScreen = () => {
               style={selectedTab === tabId ? STYLES.tabActive : STYLES.tab}
               onPress={() => handleClickTab(tabId)}
             >
-              <Text
-                style={
-                  selectedTab === tabId ? STYLES.tabTextActive : STYLES.tabText
-                }
-              >
-                {tabId}
-              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ width: 20 }}>
+                  <Text
+                    style={
+                      selectedTab === tabId
+                        ? STYLES.tabTextActive
+                        : STYLES.tabText
+                    }
+                  >
+                    {tabId}
+                  </Text>
+                </View>
+                <View style={STYLES.tabCloseIcon}>
+                  <Text
+                    style={
+                      selectedTab === tabId
+                        ? STYLES.tabCloseTextActive
+                        : STYLES.tabCloseText
+                    }
+                    onPress={() => handleRemoveTab(tabId)}
+                  >
+                    X
+                  </Text>
+                </View>
+              </View>
             </TouchableOpacity>
           ))}
         </View>
@@ -92,7 +122,6 @@ const CalculatorScreen = () => {
         {tabSize.map((tabId, idx) => (
           <View
             key={idx}
-            // style={STYLES.showTab}
             style={selectedTab === tabId ? STYLES.showTab : STYLES.hideTab}
           >
             <Calculator data={tabData[idx]} onChange={handleData(tabId)} />

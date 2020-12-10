@@ -68,14 +68,22 @@ const getVariables = (parsed) => {
         variables[item.name] = item;
       });
   } catch (e) {
-    console.log();
+    console.log(e);
   }
   return variables;
 };
 
 const getValueFromVars = (variables, line) => {
+  let result = "";
   const equation = getEquation(variables, line);
-  return math.evaluate(equation);
+  if (!equation) return result;
+
+  try {
+    result = math.evaluate(equation);
+  } catch (e) {
+    console.log("ddd");
+  }
+  return result;
 };
 
 const getEquation = (variables, line) => {
