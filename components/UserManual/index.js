@@ -40,6 +40,7 @@ const UserManual = () => {
         }}
       >
         <Text>Developed by Chance</Text>
+        <Text>Version 0.1.1</Text>
       </View>
     </View>
   );

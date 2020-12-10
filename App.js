@@ -19,7 +19,8 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? 40 : 40
+    // paddingTop: 40
+    paddingTop: Platform.OS === "android" ? 40 : 60
   }
 });
 

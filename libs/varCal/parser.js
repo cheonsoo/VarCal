@@ -61,11 +61,15 @@ const parse = (lines) => {
 
 const getVariables = (parsed) => {
   const variables = {};
-  parsed
-    .filter((item) => item.type === "variable")
-    .forEach((item) => {
-      variables[item.name] = item;
-    });
+  try {
+    parsed
+      .filter((item) => item.type === "variable")
+      .forEach((item) => {
+        variables[item.name] = item;
+      });
+  } catch (e) {
+    console.log();
+  }
   return variables;
 };
 

@@ -1,11 +1,14 @@
 export const getNumberFormat = (val) => {
-  var regexp = /\B(?=(\d{3})+(?!\d))/g;
-  return val.toString().replace(regexp, ",");
+  try {
+    var regexp = /\B(?=(\d{3})+(?!\d))/g;
+    return val.toString().replace(regexp, ",");
+  } catch (e) {
+    console.log(e);
+  }
+  return "";
 };
 
 export const printResult = (parsed) => {
-  console.log(parsed);
-
   console.log("//////////////////////////////");
   console.log("// VARIABLES");
   console.log("//////////////////////////////");

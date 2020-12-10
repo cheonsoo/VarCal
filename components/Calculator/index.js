@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   StyleSheet
 } from "react-native";
-import { Card } from "react-native-material-ui";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
 import UselessTextInput from "components/Calculator/UselessTextInput";
@@ -21,10 +20,12 @@ const FONT_SIZE = 15;
 
 let layer = null;
 
-const Calculator = () => {
+const Calculator = ({ data, onChange }) => {
   const [value, setText] = useState("");
   const [converted, setConverted] = useState({});
   const [parsed, setParsed] = useState([]);
+  const [selection, setSelection] = useState({});
+  const textAreaRef = useRef();
 
   useEffect(() => {
     layer = ModalLayerFactory.create({
@@ -32,8 +33,14 @@ const Calculator = () => {
     });
   });
 
+  useEffect(() => {
+    // console.log(data);
+    setText(data);
+  }, [data]);
+
   const handleChangeText = (text) => {
     setText(text);
+    onChange(text);
   };
 
   const handleKeyUp = (evt) => {
@@ -62,13 +69,25 @@ const Calculator = () => {
     }
   };
 
-  const handleClear = (evt) => {
+  const handleInputOperator = (_operator) => {
+    const left = value.substring(0, selection.start);
+    const right = value.substring(selection.end);
+    const _text = `${left} ${_operator} ${right}`;
+
+    setText(_text);
+  };
+
+  const handleClear = () => {
     setText("");
     setParsed([]);
   };
 
   const handleOpenInfo = (evt) => {
     layer.show();
+  };
+
+  const handleSelection = ({ nativeEvent: { selection } }) => {
+    setSelection(selection);
   };
 
   const renderItems = () => {
@@ -109,18 +128,40 @@ const Calculator = () => {
       <View style={STYLES.buttonArea}>
         <View style={STYLES.buttonArea1}>
           <TouchableOpacity
+            style={STYLES.button.operator.touch}
+            onPress={() => handleInputOperator("+")}
+          >
+            <Text style={STYLES.button.operator.text}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={STYLES.button.operator.touch}
+            onPress={() => handleInputOperator("-")}
+          >
+            <Text style={STYLES.button.operator.text}>-</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={STYLES.button.operator.touch}
+            onPress={() => handleInputOperator("*")}
+          >
+            <Text style={STYLES.button.operator.text}>X</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={STYLES.button.operator.touch}
+            onPress={() => handleInputOperator("/")}
+          >
+            <Text style={STYLES.button.operator.text}>/</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={STYLES.button.operator.touch}
+            onPress={() => handleInputOperator("=")}
+          >
+            <Text style={STYLES.button.operator.text}>=</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={STYLES.button.clear.touch}
             onPress={handleClear}
           >
             <Text style={STYLES.button.clear.text}>CLEAR</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={STYLES.buttonArea2}>
-          <TouchableOpacity
-            style={STYLES.button.info.touch}
-            onPress={handleOpenInfo}
-          >
-            <Text style={STYLES.button.info.text}>?</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -128,11 +169,13 @@ const Calculator = () => {
       <View style={STYLES.contentArea}>
         <View style={STYLES.textArea}>
           <UselessTextInput
+            ref={textAreaRef}
             style={STYLES.textInput}
             multiline
             numberOfLines={20}
             onChangeText={handleChangeText}
             onKeyPress={handleKeyUp}
+            onSelectionChange={handleSelection}
             value={value}
           />
         </View>
@@ -143,11 +186,5 @@ const Calculator = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  calculatorContainer: {
-    flex: 1,
-    width: "100%"
-  }
-});
-
-export default Calculator;
+// export default Calculator;
+export default React.memo(Calculator);
