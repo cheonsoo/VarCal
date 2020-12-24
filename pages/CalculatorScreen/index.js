@@ -22,6 +22,10 @@ const CalculatorScreen = () => {
     });
   });
 
+  useEffect(() => {
+    setSelectedTab(tabSize.length);
+  }, [tabSize]);
+
   const handleClickTab = (tabId) => {
     setSelectedTab(tabId);
   };

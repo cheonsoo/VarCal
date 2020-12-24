@@ -116,6 +116,17 @@ const Calculator = ({ data, onChange }) => {
     setText(_text);
   };
 
+  const handleSumAll = () => {
+    const variables = PARSER.getVariables(parsed);
+
+    let varsArr = [];
+    Object.keys(variables).forEach((key) => {
+      varsArr.push(variables[key].name);
+    });
+    let varsStr = varsArr.join(" + ");
+    setText(`${value}\n${varsStr}`);
+  };
+
   const handleClear = () => {
     setText("");
     setParsed([]);
@@ -195,6 +206,22 @@ const Calculator = ({ data, onChange }) => {
             onPress={() => handleInputOperator("=")}
           >
             <Text style={STYLES.button.operator.text}>=</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              STYLES.button.operator.touch,
+              STYLES.button.operator.sumAll
+            ]}
+            onPress={handleSumAll}
+          >
+            <Text
+              style={[
+                STYLES.button.operator.text,
+                STYLES.button.operator.textSumAll
+              ]}
+            >
+              SUMALL
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={STYLES.button.clear.touch}

@@ -1,13 +1,14 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import Manual from "assets/UserManual.png";
+import * as CONST from "constants/index.js";
 
 const UserManual = () => {
   return (
     <View
       style={{
         width: 300,
-        height: 250,
+        height: 300,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 5,
@@ -40,7 +41,9 @@ const UserManual = () => {
         }}
       >
         <Text>Developed by Chance</Text>
-        <Text>Version 0.1.1</Text>
+        <Text>Version {CONST.version}</Text>
+        <Text>Donation</Text>
+        <Text>{CONST.donation}</Text>
       </View>
     </View>
   );
