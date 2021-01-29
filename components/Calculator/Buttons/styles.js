@@ -1,10 +1,4 @@
-const FONT_SIZE = 15;
-
 const styles = {
-  calculatorContainer: {
-    flex: 1,
-    width: "100%"
-  },
   buttonArea: {
     height: 50,
     flexDirection: "row",
@@ -14,12 +8,6 @@ const styles = {
   buttonArea1: {
     flex: 10,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingRight: 10
-  },
-  buttonArea2: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingRight: 10
@@ -65,49 +53,7 @@ const styles = {
         fontSize: 13,
         fontWeight: "bold"
       }
-    },
-    info: {
-      touch: {
-        backgroundColor: "#fff",
-        width: 30,
-        height: 30,
-        borderColor: "#736E6D",
-        borderWidth: 2,
-        borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "center"
-      },
-      text: {
-        color: "#736E6D",
-        fontSize: 20,
-        fontWeight: "bold"
-      }
     }
-  },
-  contentArea: {
-    flex: 2,
-    flexDirection: "row",
-    paddingBottom: 50
-  },
-  // textArea: {
-  //   flex: 2,
-  //   paddingTop: 5,
-  //   paddingBottom: 30,
-  //   paddingLeft: 20
-  // },
-  resultArea: {
-    flex: 3,
-    paddingTop: 5,
-    paddingBottom: 5,
-    backgroundColor: "#e9e9e9"
-  },
-  textInput: {
-    width: "100%",
-    height: "100%",
-    fontSize: FONT_SIZE,
-    fontWeight: "bold",
-    textAlign: "left",
-    textAlignVertical: "top"
   }
 };
 
