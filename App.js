@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, Platform } from "react-native";
 import { ModalLayers } from "react-native-modal-layer";
 
 import CalculatorScreen from "pages/CalculatorScreen";

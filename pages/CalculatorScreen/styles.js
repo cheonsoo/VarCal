@@ -7,7 +7,8 @@ const styles = {
     height: 33,
     flexDirection: "row",
     borderBottomColor: "#575757",
-    borderBottomWidth: 3
+    borderBottomWidth: 3,
+    paddingLeft: 10
   },
   addTab: {
     width: 26,
@@ -89,7 +90,8 @@ const styles = {
     justifyContent: "center",
     position: "absolute",
     top: -5,
-    right: -22
+    right: -22,
+    opacity: 0
   },
   tabCloseText: { color: "#575757", fontWeight: "bold", fontSize: 10 },
   tabCloseTextActive: { color: "#fff", fontWeight: "bold", fontSize: 10 },
@@ -101,7 +103,9 @@ const styles = {
     borderWidth: 2,
     borderRadius: 15,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    position: "absolute",
+    right: 10
   },
   buttonText: {
     color: "#736E6D",

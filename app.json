@@ -4,9 +4,9 @@
     "slug": "VarCal",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/VarCalAppIcon.png",
+    "icon": "./assets/ios_app_icons/Icon-1024-ios.png",
     "splash": {
-      "image": "./assets/VarCalAppIcon.png",
+      "image": "./assets/ios_app_icons/Icon-1024.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "VarCal"
+      "bundleIdentifier": "VarCal",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {

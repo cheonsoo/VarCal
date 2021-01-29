@@ -12,7 +12,7 @@ let layer = null;
 
 const CalculatorScreen = () => {
   const [text, setText] = useState("");
-  const [tabSize, setTabSize] = useState([1]);
+  const [tabSize, setTabSize] = useState([1, 2, 3, 4, 5]);
   const [selectedTab, setSelectedTab] = useState(1);
   const [tabData, setTabData] = useState(["", "", "", "", ""]);
 
@@ -22,9 +22,9 @@ const CalculatorScreen = () => {
     });
   });
 
-  useEffect(() => {
-    setSelectedTab(tabSize.length);
-  }, [tabSize]);
+  // useEffect(() => {
+  //   setSelectedTab(tabSize.length);
+  // }, [tabSize]);
 
   const handleClickTab = (tabId) => {
     setSelectedTab(tabId);
@@ -79,10 +79,12 @@ const CalculatorScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={STYLES.tabArea}>
-        <TouchableOpacity style={STYLES.addTab} onPress={handleAddTab}>
+
+        {/* <TouchableOpacity style={STYLES.addTab} onPress={handleAddTab}>
           <Text style={STYLES.addTabText}>+</Text>
-        </TouchableOpacity>
-        <View style={{ flexDirection: "row", width: 340 }}>
+        </TouchableOpacity> */}
+
+        <View style={{ flexDirection: "row", width: "80%" }}>
           {tabSize.map((tabId, idx) => (
             <TouchableOpacity
               key={idx}
@@ -90,7 +92,7 @@ const CalculatorScreen = () => {
               onPress={() => handleClickTab(tabId)}
             >
               <View style={{ flexDirection: "row" }}>
-                <View style={{ width: 20 }}>
+                <View>
                   <Text
                     style={
                       selectedTab === tabId
@@ -108,7 +110,7 @@ const CalculatorScreen = () => {
                         ? STYLES.tabCloseTextActive
                         : STYLES.tabCloseText
                     }
-                    onPress={() => handleRemoveTab(tabId)}
+                    // onPress={() => handleRemoveTab(tabId)}
                   >
                     X
                   </Text>
