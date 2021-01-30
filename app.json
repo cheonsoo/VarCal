@@ -2,7 +2,7 @@
   "expo": {
     "name": "VarCal",
     "slug": "VarCal",
-    "version": "1.0.0",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/ios_app_icons/Icon-1024-ios.png",
     "splash": {
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "VarCal",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.5.0"
     },
     "android": {
       "adaptiveIcon": {

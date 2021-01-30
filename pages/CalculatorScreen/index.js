@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
 import Calculator from "components/Calculator";
-import TextInput from "components/Calculator/UselessTextInput";
 import UserManual from "components/UserManual";
 
 import STYLES from "./styles";

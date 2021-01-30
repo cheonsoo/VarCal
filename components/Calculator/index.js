@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
-import UselessTextInput from "components/Calculator/UselessTextInput";
+import MultiLineTextInput from "components/common/MultiLineTextInput";
 import Buttons from "components/Calculator/Buttons";
 import UserManual from "components/UserManual";
 
 import PARSER from "libs/varCal/parser";
 import * as UTILS from "utils/index";
-import STYLES from "./styles";
+import STYLE from "./style";
 
 const FONT_SIZE = 15;
 
@@ -32,13 +32,11 @@ const Calculator = ({ data, onChange }) => {
   const resultAreaRef = useRef();
 
   useEffect(() => {
+    textAreaRef.current.focus();
+
     layer = ModalLayerFactory.create({
       component: <UserManual />
     });
-  });
-
-  useEffect(() => {
-    textAreaRef.current.focus();
   }, []);
 
   useEffect(() => {
@@ -52,35 +50,6 @@ const Calculator = ({ data, onChange }) => {
   const handleChangeText = (text) => {
     setText(text);
     onChange(text);
-  };
-
-  const handleKeyUp = (evt) => {
-    // console.log("### keyUp");
-    // if (evt.nativeEvent.key === "Enter") {
-    const arr = value.split("\n");
-
-    const parsed = PARSER.parse(arr);
-    const variables = PARSER.getVariables(parsed);
-
-    try {
-      parsed
-        .filter((item) => item.type === "equation")
-        .forEach((item) => {
-          const converted = PARSER.getEquation(variables, item.name);
-
-          if (converted !== "") {
-            item.converted = converted;
-            item.value = eval(converted);
-          }
-        });
-    } catch (e) {
-      console.log(e);
-    }
-
-    console.log(parsed);
-
-    setParsed(parsed);
-    // }
   };
 
   const handleParse = () => {
@@ -155,7 +124,7 @@ const Calculator = ({ data, onChange }) => {
     setText(_text);
   };
 
-  const renderItems = () => {
+  const renderResult = () => {
     const items = [];
 
     for (let i = 0; i < parsed.length; i++) {
@@ -204,25 +173,21 @@ const Calculator = ({ data, onChange }) => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={50}>
-      <View style={STYLES.calculatorContainer}>
-        {/* <View style={STYLES.buttonArea}> */}
+      <View style={STYLE.calculatorContainer}>
         <Buttons handleInputOperator={handleInputOperator} handleSumAll={handleSumAll} handleClear={handleClear} />
-        {/* </View> */}
 
-        <View style={STYLES.resultArea}>
+        <View style={STYLE.resultArea}>
           <ScrollView
             ref={resultAreaRef}
-            onContentSizeChange={() => {
-              resultAreaRef.current.scrollToEnd({ animated: true });
-            }}
+            onContentSizeChange={() => resultAreaRef.current.scrollToEnd({ animated: true })}
             keyboardShouldPersistTaps={'always'}
-          >{renderItems()}</ScrollView>
+          >{renderResult()}</ScrollView>
         </View>
 
-        <View style={STYLES.contentArea}>
-          <UselessTextInput
+        <View style={STYLE.contentArea}>
+          <MultiLineTextInput
             ref={textAreaRef}
-            style={STYLES.textInput}
+            style={STYLE.textInput}
             multiline
             numberOfLines={20}
             onChangeText={handleChangeText}

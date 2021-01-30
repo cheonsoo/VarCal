@@ -1,16 +1,9 @@
-const styles = {
+const style = {
   buttonArea: {
     height: 50,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"
-  },
-  buttonArea1: {
-    flex: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingRight: 10
   },
   button: {
     operator: {
@@ -57,4 +50,4 @@ const styles = {
   }
 };
 
-export default styles;
+export default style;

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import Manual from "assets/UserManual.png";
 import * as CONST from "constants/index.js";
+import STYLE from "./style";
 
 const UserManual = () => {
   return (
