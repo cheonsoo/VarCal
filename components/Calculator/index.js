@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
-  StyleSheet
+  Keyboard
 } from "react-native";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
-import UselessTextInput from "components/Calculator/UselessTextInput";
+import MultiLineTextInput from "components/common/MultiLineTextInput";
+import Buttons from "components/Calculator/Buttons";
 import UserManual from "components/UserManual";
 
 import PARSER from "libs/varCal/parser";
 import * as UTILS from "utils/index";
-import STYLES from "./styles";
+import STYLE from "./style";
 
 const FONT_SIZE = 15;
 
@@ -26,54 +29,27 @@ const Calculator = ({ data, onChange }) => {
   const [parsed, setParsed] = useState([]);
   const [selection, setSelection] = useState({});
   const textAreaRef = useRef();
+  const resultAreaRef = useRef();
 
   useEffect(() => {
+    textAreaRef.current.focus();
+
     layer = ModalLayerFactory.create({
       component: <UserManual />
     });
-  });
+  }, []);
 
   useEffect(() => {
     handleParse();
   }, [value]);
 
   useEffect(() => {
-    // console.log(data);
     setText(data);
   }, [data]);
 
   const handleChangeText = (text) => {
     setText(text);
     onChange(text);
-  };
-
-  const handleKeyUp = (evt) => {
-    // console.log("### keyUp");
-    // if (evt.nativeEvent.key === "Enter") {
-    const arr = value.split("\n");
-
-    const parsed = PARSER.parse(arr);
-    const variables = PARSER.getVariables(parsed);
-
-    try {
-      parsed
-        .filter((item) => item.type === "equation")
-        .forEach((item) => {
-          const converted = PARSER.getEquation(variables, item.name);
-
-          if (converted !== "") {
-            item.converted = converted;
-            item.value = eval(converted);
-          }
-        });
-    } catch (e) {
-      console.log(e);
-    }
-
-    console.log(parsed);
-
-    setParsed(parsed);
-    // }
   };
 
   const handleParse = () => {
@@ -140,32 +116,54 @@ const Calculator = ({ data, onChange }) => {
     setSelection(selection);
   };
 
-  const renderItems = () => {
+  const handleClickVariable = (item) => {
+    const left = value.substring(0, selection.start);
+    const right = value.substring(selection.end);
+    const _text = `${left}${item.name}${right}`;
+
+    setText(_text);
+  };
+
+  const renderResult = () => {
     const items = [];
 
     for (let i = 0; i < parsed.length; i++) {
       const item = parsed[i];
 
+      if (item.type === "blank") continue;
+
       items.push(
-        <View
-          key={item.idx}
-          style={{
-            height: 18
-          }}
-        >
-          <Text
-            key={item.idx}
-            style={{
-              width: "100%",
-              height: "100%",
-              color: "#2471A3",
-              fontSize: FONT_SIZE,
-              fontWeight: "bold",
-              textAlign: "right"
-            }}
-          >
-            {UTILS.getNumberFormat(item.value)}
-          </Text>
+        <View key={item.idx} style={{ width: "100%", flexDirection: "row", paddingLeft: 10, paddingRight: 10, marginBottom: 5 }}>
+          <View style={{ width: "70%" }} key={`name_${item.idx}`}>
+            <TouchableOpacity
+              style={{
+                alignSelf: "flex-start",
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 2,
+                paddingBottom: 2,
+                backgroundColor: item.type === "variable" ? "#B5DF5A" : "#0E61EB",
+                borderRadius: 4
+              }}
+              onPress={() => handleClickVariable(item)}
+            >
+              <Text style={{ color: item.type === "variable" ? "#2471A3" : "#fff", fontSize: FONT_SIZE, fontWeight: "bold" }}>{item.name}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ width: "30%" }}key={`val_${item.idx}`}>
+            <Text
+              key={`val_${item.idx}`}
+              style={{
+                color: "#2471A3",
+                fontSize: FONT_SIZE,
+                fontWeight: "bold",
+                textAlign: "right"
+              }}
+            >
+              {UTILS.getNumberFormat(item.value)}
+            </Text>
+          </View>
         </View>
       );
     }
@@ -174,83 +172,33 @@ const Calculator = ({ data, onChange }) => {
   };
 
   return (
-    <View style={STYLES.calculatorContainer}>
-      <View style={STYLES.buttonArea}>
-        <View style={STYLES.buttonArea1}>
-          <TouchableOpacity
-            style={STYLES.button.operator.touch}
-            onPress={() => handleInputOperator("+")}
-          >
-            <Text style={STYLES.button.operator.text}>+</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={STYLES.button.operator.touch}
-            onPress={() => handleInputOperator("-")}
-          >
-            <Text style={STYLES.button.operator.text}>-</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={STYLES.button.operator.touch}
-            onPress={() => handleInputOperator("*")}
-          >
-            <Text style={STYLES.button.operator.text}>X</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={STYLES.button.operator.touch}
-            onPress={() => handleInputOperator("/")}
-          >
-            <Text style={STYLES.button.operator.text}>/</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={STYLES.button.operator.touch}
-            onPress={() => handleInputOperator("=")}
-          >
-            <Text style={STYLES.button.operator.text}>=</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              STYLES.button.operator.touch,
-              STYLES.button.operator.sumAll
-            ]}
-            onPress={handleSumAll}
-          >
-            <Text
-              style={[
-                STYLES.button.operator.text,
-                STYLES.button.operator.textSumAll
-              ]}
-            >
-              SUMALL
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={STYLES.button.clear.touch}
-            onPress={handleClear}
-          >
-            <Text style={STYLES.button.clear.text}>CLEAR</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={50}>
+      <View style={STYLE.calculatorContainer}>
+        <Buttons handleInputOperator={handleInputOperator} handleSumAll={handleSumAll} handleClear={handleClear} />
 
-      <View style={STYLES.contentArea}>
-        <View style={STYLES.textArea}>
-          <UselessTextInput
+        <View style={STYLE.resultArea}>
+          <ScrollView
+            ref={resultAreaRef}
+            onContentSizeChange={() => resultAreaRef.current.scrollToEnd({ animated: true })}
+            keyboardShouldPersistTaps={'always'}
+          >{renderResult()}</ScrollView>
+        </View>
+
+        <View style={STYLE.contentArea}>
+          <MultiLineTextInput
             ref={textAreaRef}
-            style={STYLES.textInput}
+            style={STYLE.textInput}
             multiline
             numberOfLines={20}
             onChangeText={handleChangeText}
-            // onKeyPress={handleKeyUp}
             onSelectionChange={handleSelection}
             value={value}
+            keyboardDismissMode="on-drag"
           />
         </View>
-
-        <View style={STYLES.resultArea}>{renderItems()}</View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
-// export default Calculator;
 export default React.memo(Calculator);

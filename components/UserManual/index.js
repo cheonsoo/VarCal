@@ -2,13 +2,14 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import Manual from "assets/UserManual.png";
 import * as CONST from "constants/index.js";
+import STYLE from "./style";
 
 const UserManual = () => {
   return (
     <View
       style={{
         width: 300,
-        height: 300,
+        height: 400,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 5,
@@ -18,7 +19,7 @@ const UserManual = () => {
       <View
         style={{
           width: "100%",
-          height: 200,
+          height: 300,
           alignItems: "flex-start",
           justifyContent: "flex-start"
         }}
@@ -35,15 +36,25 @@ const UserManual = () => {
       <View
         style={{
           width: "100%",
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center"
+          height: 80,
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          paddingLeft: 20
         }}
       >
-        <Text>Developed by Chance</Text>
+        <Text>- Donation</Text>
+        <Text>   {CONST.donation}</Text>
+        <Text></Text>
+        <Text>- Developed by {CONST.developer}</Text>
+      </View>
+      <View style={{
+          width: "100%",
+          height: 30,
+          alignItems: "flex-end",
+          justifyContent: "center",
+          paddingRight: 10
+        }}>
         <Text>Version {CONST.version}</Text>
-        <Text>Donation</Text>
-        <Text>{CONST.donation}</Text>
       </View>
     </View>
   );

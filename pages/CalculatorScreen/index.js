@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
 import Calculator from "components/Calculator";
-import TextInput from "components/Calculator/UselessTextInput";
 import UserManual from "components/UserManual";
 
 import STYLES from "./styles";
@@ -79,12 +78,7 @@ const CalculatorScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={STYLES.tabArea}>
-
-        {/* <TouchableOpacity style={STYLES.addTab} onPress={handleAddTab}>
-          <Text style={STYLES.addTabText}>+</Text>
-        </TouchableOpacity> */}
-
-        <View style={{ flexDirection: "row", width: "80%" }}>
+        <View style={{ flexDirection: "row", width: "100%" }}>
           {tabSize.map((tabId, idx) => (
             <TouchableOpacity
               key={idx}
@@ -110,7 +104,6 @@ const CalculatorScreen = () => {
                         ? STYLES.tabCloseTextActive
                         : STYLES.tabCloseText
                     }
-                    // onPress={() => handleRemoveTab(tabId)}
                   >
                     X
                   </Text>

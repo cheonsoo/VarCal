@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { TextInput } from "react-native";
 
-const UselessTextInput = forwardRef((props, ref) => {
+const MultiLineTextInput = forwardRef((props, ref) => {
   return (
     <TextInput
       {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
@@ -13,4 +13,4 @@ const UselessTextInput = forwardRef((props, ref) => {
   );
 });
 
-export default UselessTextInput;
+export default MultiLineTextInput;
