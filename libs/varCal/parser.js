@@ -15,6 +15,13 @@ const parse = (lines) => {
           value: ""
         };
         parsed.push(blank);
+      } else if (line.trim().startsWith("#")) {
+        let comments = {
+          idx,
+          type: "comments",
+          value: line.trim()
+        };
+        parsed.push(comments);
       } else {
         if (line.indexOf("=") > -1) {
           let variable = {};
@@ -81,13 +88,13 @@ const getValueFromVars = (variables, line) => {
   try {
     result = math.evaluate(equation);
   } catch (e) {
-    console.log("ddd");
+    console.log(e);
   }
   return result;
 };
 
 const getEquation = (variables, line) => {
-  if (line === "") return "";
+  if (Object.keys(variables).length === 0 || line === "") return "";
 
   let result;
   try {

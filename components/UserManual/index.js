@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import Manual from "assets/UserManual.png";
 import * as CONST from "constants/index.js";
+import SwipeView from './SwipeView';
+
 import STYLE from "./style";
 
 const UserManual = () => {
@@ -9,7 +11,7 @@ const UserManual = () => {
     <View
       style={{
         width: 300,
-        height: 400,
+        height: 500,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 5,
@@ -19,39 +21,32 @@ const UserManual = () => {
       <View
         style={{
           width: "100%",
-          height: 300,
+          height: "70%",
           alignItems: "flex-start",
           justifyContent: "flex-start"
         }}
       >
-        <Image
-          style={{
-            width: "100%",
-            height: "100%",
-            resizeMode: "contain"
-          }}
-          source={require("assets/UserManual.png")}
-        />
+        <SwipeView />
       </View>
       <View
         style={{
           width: "100%",
-          height: 80,
+          height: 70,
           alignItems: "flex-start",
           justifyContent: "flex-start",
-          paddingLeft: 20
+          paddingLeft: 10,
+          paddingTop: 20
         }}
       >
-        <Text>- Donation</Text>
-        <Text>   {CONST.donation}</Text>
-        <Text></Text>
-        <Text>- Developed by {CONST.developer}</Text>
+        {/* <Text></Text>
+        <Text>- Developed by {CONST.developer}</Text> */}
       </View>
       <View style={{
           width: "100%",
           height: 30,
           alignItems: "flex-end",
           justifyContent: "center",
+          paddingTop: 10,
           paddingRight: 10
         }}>
         <Text>Version {CONST.version}</Text>

@@ -1,3 +1,5 @@
+import { CenterFocusStrong } from "@material-ui/icons";
+
 const style = {
   buttonArea: {
     height: 50,
@@ -6,6 +8,15 @@ const style = {
     justifyContent: "center"
   },
   button: {
+    icon: {
+      fontSize: 15,
+      fontWeight: "bold",
+      color: "#000",
+      borderWidth: 1,
+      padding: 5,
+      borderRadius: 5,
+      marginRight: 15
+    },
     operator: {
       touch: {
         width: 25,

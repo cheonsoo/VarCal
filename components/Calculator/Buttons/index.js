@@ -8,70 +8,55 @@ import {
   Button,
   TouchableWithoutFeedback
 } from "react-native";
-import Icon from 'react-native-vector-icons/Fontisto';
+import IconFontisto from 'react-native-vector-icons/Fontisto';
+import IconEntypo from 'react-native-vector-icons/Entypo';
+import IconFeather from 'react-native-vector-icons/Feather';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import STYLE from "./style";
 
-const Buttons = ({ handleInputOperator, handleSumAll, handleClear }) => {
+const Buttons = ({ handleInputOperator, handleSumAll, handleClear, handleKeyboard }) => {
   return (
     <View style={STYLE.buttonArea}>
-      <TouchableOpacity
-        style={STYLE.button.operator.touch}
-        onPress={() => handleInputOperator("+")}
-      >
-        <Text style={STYLE.button.operator.text}>+</Text>
+      <TouchableOpacity onPress={() => handleInputOperator("+")}>
+        <IconAntDesign style={STYLE.button.icon} name="plus" />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={STYLE.button.operator.touch}
-        onPress={() => handleInputOperator("-")}
-      >
-        <Text style={STYLE.button.operator.text}>-</Text>
+      <TouchableOpacity onPress={() => handleInputOperator("-")}>
+        <IconAntDesign style={STYLE.button.icon} name="minus" />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={STYLE.button.operator.touch}
-        onPress={() => handleInputOperator("*")}
-      >
-        <Text style={STYLE.button.operator.text}>X</Text>
+      <TouchableOpacity onPress={() => handleInputOperator("*")}>
+        <IconAntDesign style={STYLE.button.icon} name="close" />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={STYLE.button.operator.touch}
-        onPress={() => handleInputOperator("/")}
-      >
-        <Text style={STYLE.button.operator.text}>/</Text>
+      <TouchableOpacity onPress={() => handleInputOperator("/")}>
+        <IconFontAwesome5 style={STYLE.button.icon} name="divide" />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={STYLE.button.operator.touch}
-        onPress={() => handleInputOperator("=")}
-      >
-        <Text style={STYLE.button.operator.text}>=</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          STYLE.button.operator.touch,
-          STYLE.button.operator.sumAll
-        ]}
-        onPress={handleSumAll}
-      >
-        <Text
-          style={[
-            STYLE.button.operator.text,
-            STYLE.button.operator.textSumAll
-          ]}
-        >
-          SUMALL
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={STYLE.button.clear.touch}
-        onPress={handleClear}
-      >
-        <Text style={STYLE.button.clear.text}>CLEAR</Text>
+      <TouchableOpacity onPress={() => handleInputOperator("=")}>
+        <IconMaterialCommunityIcons style={STYLE.button.icon} name="equal" />
       </TouchableOpacity>
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableOpacity onPress={handleSumAll}>
+        <Text style={{ color: "#000", marginRight: 15 }}>+ ALL</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{ marginRight: 20 }} onPress={handleClear}>
+        <IconFontAwesome name="trash-o" size={20} />
+      </TouchableOpacity>
+
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ marginLeft: 10 }}>
-          <Icon name="keyboard" size={20} color="#000" />
+          <IconFontAwesome name="keyboard-o" size={25} color="#000" />
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
+      {/* <TouchableWithoutFeedback onPress={handleKeyboard}>
+        <View style={{ marginLeft: 10 }}>
+          <IconFontAwesome name="keyboard-o" size={25} color="#000" />
+        </View>
+      </TouchableWithoutFeedback> */}
+      <TouchableOpacity style={{ marginRight: 10 }} onPress={handleKeyboard}>
+        <IconFontAwesome name="keyboard-o" size={25} color="#000" />
+      </TouchableOpacity>
     </View>
   );
 };

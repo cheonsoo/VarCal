@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   View,
   ScrollView,
@@ -23,17 +23,16 @@ const FONT_SIZE = 15;
 
 let layer = null;
 
-const Calculator = ({ data, onChange }) => {
-  const [value, setText] = useState("");
+const Calculator = ({ tabId, data, onChange }) => {
+  const [text, setText] = useState("");
   const [converted, setConverted] = useState({});
   const [parsed, setParsed] = useState([]);
   const [selection, setSelection] = useState({});
+  const [showKeyboard, setShowKeyboard] = useState(true);
   const textAreaRef = useRef();
   const resultAreaRef = useRef();
 
   useEffect(() => {
-    textAreaRef.current.focus();
-
     layer = ModalLayerFactory.create({
       component: <UserManual />
     });
@@ -41,34 +40,41 @@ const Calculator = ({ data, onChange }) => {
 
   useEffect(() => {
     handleParse();
-  }, [value]);
+    onChange(text);
+  }, [text]);
 
   useEffect(() => {
     setText(data);
   }, [data]);
 
+  useEffect(() => {
+    if (showKeyboard) textAreaRef.current.blur();
+    else textAreaRef.current.focus();
+  }, [showKeyboard]);
+
   const handleChangeText = (text) => {
     setText(text);
-    onChange(text);
   };
 
   const handleParse = () => {
-    if (!value) return;
+    if (!text) {
+      setParsed({});
+    };
 
     try {
-      const arr = value.split("\n");
-      const parsed = PARSER.parse(arr);
-      const variables = PARSER.getVariables(parsed);
+      const arr = text.split("\n");
+      let _parsed = PARSER.parse(arr);
+      const variables = PARSER.getVariables(_parsed);
       try {
-        parsed
+        _parsed
           .filter((item) => item.type === "equation")
           .forEach((item) => {
             const converted = PARSER.getEquation(variables, item.name);
 
             if (converted !== "") {
-              item.converted = converted;
+              item.converted = converted ? converted : "";
               try {
-                item.value = eval(converted);
+                item.value = eval(item.converted);
               } catch (e) {
                 item.value = "";
               }
@@ -78,15 +84,15 @@ const Calculator = ({ data, onChange }) => {
         console.log(e);
       }
 
-      setParsed(parsed);
+      setParsed(_parsed);
     } catch (e) {
       console.log(e);
     }
   };
 
   const handleInputOperator = (_operator) => {
-    const left = value.substring(0, selection.start);
-    const right = value.substring(selection.end);
+    const left = text.substring(0, selection.start);
+    const right = text.substring(selection.end);
     const _text = `${left} ${_operator} ${right}`;
 
     setText(_text);
@@ -100,7 +106,7 @@ const Calculator = ({ data, onChange }) => {
       varsArr.push(variables[key].name);
     });
     let varsStr = varsArr.join(" + ");
-    setText(`${value}\n${varsStr}`);
+    setText(`${text}\n${varsStr}`);
   };
 
   const handleClear = () => {
@@ -117,11 +123,15 @@ const Calculator = ({ data, onChange }) => {
   };
 
   const handleClickVariable = (item) => {
-    const left = value.substring(0, selection.start);
-    const right = value.substring(selection.end);
+    const left = text.substring(0, selection.start);
+    const right = text.substring(selection.end);
     const _text = `${left}${item.name}${right}`;
 
     setText(_text);
+  };
+
+  const handleKeyboard = evt => {
+    setShowKeyboard(!showKeyboard);
   };
 
   const renderResult = () => {
@@ -132,40 +142,48 @@ const Calculator = ({ data, onChange }) => {
 
       if (item.type === "blank") continue;
 
-      items.push(
-        <View key={item.idx} style={{ width: "100%", flexDirection: "row", paddingLeft: 10, paddingRight: 10, marginBottom: 5 }}>
-          <View style={{ width: "70%" }} key={`name_${item.idx}`}>
-            <TouchableOpacity
-              style={{
-                alignSelf: "flex-start",
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingTop: 2,
-                paddingBottom: 2,
-                backgroundColor: item.type === "variable" ? "#B5DF5A" : "#0E61EB",
-                borderRadius: 4
-              }}
-              onPress={() => handleClickVariable(item)}
-            >
-              <Text style={{ color: item.type === "variable" ? "#2471A3" : "#fff", fontSize: FONT_SIZE, fontWeight: "bold" }}>{item.name}</Text>
-            </TouchableOpacity>
+      if (item.type === "comments") {
+        items.push(
+          <View key={item.idx} style={{ width: "100%", flexDirection: "row", paddingLeft: 10, paddingRight: 10, marginBottom: 5 }}>
+            <Text style={{ color: "#6A9955", fontSize: FONT_SIZE, fontWeight: "bold" }}>{item.value}</Text>
           </View>
+        );
+      } else {
+        items.push(
+          <View key={item.idx} style={{ width: "100%", flexDirection: "row", paddingLeft: 10, paddingRight: 10, marginBottom: 5 }}>
+            <View style={{ width: "70%" }} key={`name_${item.idx}`}>
+              <TouchableOpacity
+                style={{
+                  alignSelf: "flex-start",
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  paddingTop: 2,
+                  paddingBottom: 2,
+                  backgroundColor: item.type === "variable" ? "#B5DF5A" : "#0E61EB",
+                  borderRadius: 4
+                }}
+                onPress={() => handleClickVariable(item)}
+              >
+                <Text style={{ color: item.type === "variable" ? "#2471A3" : "#fff", fontSize: FONT_SIZE, fontWeight: "bold" }}>{item.name}</Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={{ width: "30%" }}key={`val_${item.idx}`}>
-            <Text
-              key={`val_${item.idx}`}
-              style={{
-                color: "#2471A3",
-                fontSize: FONT_SIZE,
-                fontWeight: "bold",
-                textAlign: "right"
-              }}
-            >
-              {UTILS.getNumberFormat(item.value)}
-            </Text>
+            <View style={{ width: "30%" }}key={`val_${item.idx}`}>
+              <Text
+                key={`val_${item.idx}`}
+                style={{
+                  color: "#2471A3",
+                  fontSize: FONT_SIZE,
+                  fontWeight: "bold",
+                  textAlign: "right"
+                }}
+              >
+                {UTILS.getNumberFormat(item.value)}
+              </Text>
+            </View>
           </View>
-        </View>
-      );
+        );
+      }
     }
 
     return items;
@@ -174,7 +192,7 @@ const Calculator = ({ data, onChange }) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={50}>
       <View style={STYLE.calculatorContainer}>
-        <Buttons handleInputOperator={handleInputOperator} handleSumAll={handleSumAll} handleClear={handleClear} />
+        <Buttons handleInputOperator={handleInputOperator} handleSumAll={handleSumAll} handleClear={handleClear} handleKeyboard={handleKeyboard} />
 
         <View style={STYLE.resultArea}>
           <ScrollView
@@ -192,7 +210,7 @@ const Calculator = ({ data, onChange }) => {
             numberOfLines={20}
             onChangeText={handleChangeText}
             onSelectionChange={handleSelection}
-            value={value}
+            value={text}
             keyboardDismissMode="on-drag"
           />
         </View>

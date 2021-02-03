@@ -1,4 +1,6 @@
 export const getNumberFormat = (val) => {
+  if (!val) return val;
+
   try {
     var regexp = /\B(?=(\d{3})+(?!\d))/g;
     return val.toString().replace(regexp, ",");

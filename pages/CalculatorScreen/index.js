@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { ModalLayerFactory } from "react-native-modal-layer";
 
 import Calculator from "components/Calculator";
@@ -21,12 +21,9 @@ const CalculatorScreen = () => {
     });
   });
 
-  // useEffect(() => {
-  //   setSelectedTab(tabSize.length);
-  // }, [tabSize]);
-
   const handleClickTab = (tabId) => {
     setSelectedTab(tabId);
+    Keyboard.dismiss;
   };
 
   const handleAddTab = () => {
@@ -66,11 +63,8 @@ const CalculatorScreen = () => {
 
   const handleData = (_tabId) => (data) => {
     const _tabData = tabData.map((item, idx) => {
-      if (idx + 1 == _tabId) {
-        return data;
-      } else {
-        return item;
-      }
+      if (idx + 1 == _tabId) return data;
+      else return item;
     });
     setTabData(_tabData);
   };
@@ -80,36 +74,38 @@ const CalculatorScreen = () => {
       <View style={STYLES.tabArea}>
         <View style={{ flexDirection: "row", width: "100%" }}>
           {tabSize.map((tabId, idx) => (
-            <TouchableOpacity
-              key={idx}
-              style={selectedTab === tabId ? STYLES.tabActive : STYLES.tab}
-              onPress={() => handleClickTab(tabId)}
-            >
-              <View style={{ flexDirection: "row" }}>
-                <View>
-                  <Text
-                    style={
-                      selectedTab === tabId
-                        ? STYLES.tabTextActive
-                        : STYLES.tabText
-                    }
-                  >
-                    {tabId}
-                  </Text>
+            <TouchableWithoutFeedback key={idx} onPress={Keyboard.dismiss}>
+              <TouchableOpacity
+                key={idx}
+                style={selectedTab === tabId ? STYLES.tabActive : STYLES.tab}
+                onPress={() => handleClickTab(tabId)}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <View>
+                    <Text
+                      style={
+                        selectedTab === tabId
+                          ? STYLES.tabTextActive
+                          : STYLES.tabText
+                      }
+                    >
+                      {tabId}
+                    </Text>
+                  </View>
+                  <View style={STYLES.tabCloseIcon}>
+                    <Text
+                      style={
+                        selectedTab === tabId
+                          ? STYLES.tabCloseTextActive
+                          : STYLES.tabCloseText
+                      }
+                    >
+                      X
+                    </Text>
+                  </View>
                 </View>
-                <View style={STYLES.tabCloseIcon}>
-                  <Text
-                    style={
-                      selectedTab === tabId
-                        ? STYLES.tabCloseTextActive
-                        : STYLES.tabCloseText
-                    }
-                  >
-                    X
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </TouchableWithoutFeedback>
           ))}
         </View>
         <TouchableOpacity style={STYLES.buttonInfo} onPress={handleOpenInfo}>
@@ -123,7 +119,7 @@ const CalculatorScreen = () => {
             key={idx}
             style={selectedTab === tabId ? STYLES.showTab : STYLES.hideTab}
           >
-            <Calculator data={tabData[idx]} onChange={handleData(tabId)} />
+            <Calculator tabId={tabId} data={tabData[idx]} onChange={handleData(tabId)} />
           </View>
         ))}
       </View>
