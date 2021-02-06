@@ -6,12 +6,9 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import IconSimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as CONST from "constants/index.js";
 
-// import IMAGE1 from "assets/1.png";
-// import IMAGE2 from "assets/2.png";
-// import IMAGE3 from "assets/3.png";
-// import IMAGE1 from "assets/ios_screenshots/1.6.0/5_5/screenshot1__5.5__1242x2208.png";
-// import IMAGE2 from "assets/ios_screenshots/1.6.0/5_5/screenshot2__5.5__1242x2208.png";
-// import IMAGE3 from "assets/ios_screenshots/1.6.0/5_5/screenshot3__5.5__1242x2208.png";
+import IMAGE1 from "assets/ios_screenshots/latest/UserManual_1.png";
+import IMAGE2 from "assets/ios_screenshots/latest/UserManual_2.png";
+import IMAGE3 from "assets/ios_screenshots/latest/UserManual_3.png";
 
 const MAX_PAGE = 3;
 
@@ -62,34 +59,34 @@ class SomeComponent extends Component {
           {this.state.page > 1 && <IconSimpleLineIcons style={{ fontSize: 30, color: "#8F97AB", position: "absolute", top: "50%", left: 5 }} name="arrow-left" />}
           {this.state.page < MAX_PAGE && <IconSimpleLineIcons style={{ fontSize: 30, color: "#8F97AB", position: "absolute", top: "50%", right: 5 }} name="arrow-right" />}
           {this.state.page === 1 && <View style={{ flex: 1 }}>
-            {/* <Image
+            <Image
               style={{
                 width: "100%",
                 height: "100%",
                 resizeMode: "contain"
               }}
-              source={require("assets/1.png")}
-            /> */}
+              source={IMAGE1}
+            />
           </View>}
           {this.state.page === 2 && <View>
-            {/* <Image
+            <Image
               style={{
                 width: "100%",
                 height: "100%",
                 resizeMode: "contain"
               }}
-              source={require("assets/2.png")}
-            /> */}
+              source={IMAGE2}
+            />
           </View>}
           {this.state.page === 3 && <View>
-            {/* <Image
+            <Image
               style={{
                 width: "100%",
                 height: "100%",
                 resizeMode: "contain"
               }}
-              source={require("assets/3.png")}
-            /> */}
+              source={IMAGE3}
+            />
           </View>}
       </GestureRecognizer>
     );
