@@ -70,14 +70,17 @@ const Calculator = ({ tabId, data, onChange }) => {
           .filter((item) => item.type === "equation")
           .forEach((item) => {
             const converted = PARSER.getEquation(variables, item.name);
+            console.log('converted', converted);
 
             if (converted !== "") {
               item.converted = converted ? converted : "";
               try {
-                item.value = eval(item.converted);
+                item.value = eval(item.converted).toFixed(2);
               } catch (e) {
                 item.value = "";
               }
+
+              console.log('value', item.value);
             }
           });
       } catch (e) {
